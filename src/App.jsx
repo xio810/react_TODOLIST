@@ -17,6 +17,10 @@ function App() {
     setLastTodoId(newTodo.id);
   };
 
+  const deleteTodoList = (id) => {
+    setTodos(todos.filter((todo) => todo.id != id));
+  };
+
   let todoList = <div>목록없음</div>;
 
   if (todos.length > 0) {
@@ -25,6 +29,7 @@ function App() {
         {todos.map((todo) => (
           <li key={todo}>
             {todo.id}: {todo.title}
+            <button onClick={() => deleteTodoList(todo.id)}>삭제</button>
           </li>
         ))}
       </ul>
