@@ -3,6 +3,33 @@ import { useState } from "react";
 
 function App() {
   const [newTodoTitle, setNewTodoTitle] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [lastTodoId, setLastTodoId] = useState(0);
+
+  const btnAddTodoClicked = () => {
+    const newTodo = {
+      id: lastTodoId + 1,
+      title: newTodoTitle,
+    };
+
+    setTodos([...todos, newTodo]);
+    setNewTodoTitle("");
+    setLastTodoId(newTodo.id);
+  };
+
+  let todoList = <div>목록없음</div>;
+
+  if (todos.length > 0) {
+    todoList = (
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo}>
+            {todo.id}: {todo.title}
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <>
@@ -16,16 +43,10 @@ function App() {
           onChange={(e) => setNewTodoTitle(e.target.value)}
         />
         &nbsp;
-        <button
-          onClick={() => {
-            setNewTodoTitle("");
-          }}
-        >
-          입력
-        </button>
+        <button onClick={btnAddTodoClicked}>입력</button>
       </div>
       <hr />
-      <div>목록</div>
+      {todoList}
     </>
   );
 }
