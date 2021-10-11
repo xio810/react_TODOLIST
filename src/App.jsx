@@ -1,59 +1,50 @@
 import { useState } from "react";
-``;
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-function App() {
-  const [newTodoTitle, setNewTodoTitle] = useState("");
-  const [todos, setTodos] = useState([]);
-  const [lastTodoId, setLastTodoId] = useState(0);
-
-  const btnAddTodoClicked = () => {
-    const newTodo = {
-      id: lastTodoId + 1,
-      title: newTodoTitle,
-    };
-
-    setTodos([...todos, newTodo]);
-    setNewTodoTitle("");
-    setLastTodoId(newTodo.id);
-  };
-
-  const deleteTodoList = (id) => {
-    setTodos(todos.filter((todo) => todo.id != id));
-  };
-
-  let todoList = <div>목록없음</div>;
-
-  if (todos.length > 0) {
-    todoList = (
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo}>
-            {todo.id}: {todo.title}
-            <button onClick={() => deleteTodoList(todo.id)}>삭제</button>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
+const App = () => {
   return (
-    <>
-      <div>
-        <span>새 할일</span>
-        &nbsp;
-        <input
-          type="text"
-          placeholder="새 할일을 입력해주세요."
-          value={newTodoTitle}
-          onChange={(e) => setNewTodoTitle(e.target.value)}
-        />
-        &nbsp;
-        <button onClick={btnAddTodoClicked}>입력</button>
-      </div>
-      <hr />
-      {todoList}
-    </>
+    <Router>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/userList">UserList</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <Switch>
+        <Route path="/about">
+          <AboutPage />
+        </Route>
+
+        <Route path="/userList">
+          <UserListPage />
+        </Route>
+
+        <Route path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+    </Router>
   );
-}
+};
+
+const HomePage = () => {
+  return <h1>Home</h1>;
+};
+
+const AboutPage = () => {
+  return <h1>About</h1>;
+};
+
+const UserListPage = () => {
+  return <h1>UserList</h1>;
+};
 
 export default App;
