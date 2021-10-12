@@ -10,23 +10,21 @@ const App = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/first">FirstPage</Link>
           </li>
           <li>
-            <Link to="/userList">UserList</Link>
+            <Link to="/second">SecondPage</Link>
           </li>
         </ul>
       </nav>
 
       <Switch>
-        <Route path="/about">
-          <AboutPage />
+        <Route path="/first">
+          <FirstPage />
         </Route>
-
-        <Route path="/userList">
-          <UserListPage />
+        <Route path="/second">
+          <SecondPage />
         </Route>
-
         <Route path="/">
           <HomePage />
         </Route>
@@ -36,15 +34,14 @@ const App = () => {
 };
 
 const HomePage = () => {
-  return <h1>Home</h1>;
+  return <h1>home page</h1>;
+};
+const FirstPage = () => {
+  return <h1>1 page</h1>;
 };
 
-const AboutPage = () => {
-  return <h1>About</h1>;
-};
-
-const UserListPage = () => {
-  return <h1>UserList</h1>;
+const SecondPage = () => {
+  return <h1>2 page</h1>;
 };
 
 export default App;
