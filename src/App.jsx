@@ -4,26 +4,13 @@ import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 const App = () => {
   return (
     <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/first">FirstPage</Link>
-          </li>
-          <li>
-            <Link to="/second">SecondPage</Link>
-          </li>
-        </ul>
-      </nav>
-
+      <Head />
       <Switch>
-        <Route path="/first">
-          <FirstPage />
-        </Route>
-        <Route path="/second">
+        <Route path="/page2">
           <SecondPage />
+        </Route>
+        <Route path="/page1">
+          <FirstPage />
         </Route>
         <Route path="/">
           <HomePage />
@@ -33,15 +20,35 @@ const App = () => {
   );
 };
 
-const HomePage = () => {
-  return <h1>home page</h1>;
-};
-const FirstPage = () => {
-  return <h1>1 page</h1>;
+const Head = () => {
+  const pagesPaths = [
+    ["/", "메인"],
+    ["/page1", "페이지1"],
+    ["/page2", "페이지2"],
+  ];
+
+  return (
+    <nav>
+      <ul>
+        {pagesPaths.map(([pagePath, pageName]) => (
+          <li>
+            <Link to={pagePath}>{pageName}</Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
 };
 
 const SecondPage = () => {
-  return <h1>2 page</h1>;
+  return <h1>두번째 페이지</h1>;
 };
 
+const FirstPage = () => {
+  return <h1>첫 페이지</h1>;
+};
+
+const HomePage = () => {
+  return <h1>홈 페이지</h1>;
+};
 export default App;
