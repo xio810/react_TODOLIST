@@ -1,51 +1,35 @@
 import { useState } from "react";
-import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <RecoilRoot>
-      <RecoilApp />
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <Main />
+    </QueryClientProvider>
   );
 };
 
-const textAtom = atom({
-  key: "app/text",
-  default: "",
-});
+const Main = () => {
+  const { isLoading, error, data } = useQuery("pokeList", () =>
+    fetch("https://pokeapi.co/api/v2/pokemon").then((res) => res.json())
+  );
 
-const textLengthSelector = selector({
-  key: "app/textLength",
-  get: ({ get }) => get(textAtom).length,
-});
+  if (isLoading) return "Loading...";
 
-const reversedTextSelector = selector({
-  key: "app/reversedText",
-  get: ({ get }) => get(textAtom).split("").reverse().join(""),
-});
-
-const RecoilApp = () => {
-  const [text, setText] = useRecoilState(textAtom);
-  const [textLength] = useRecoilState(textLengthSelector);
-  const [reversedText] = useRecoilState(reversedTextSelector);
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <>
-      <input
-        type="text"
-        onChange={({ target: { value } }) => setText(value.trim())}
-      />
-      <div>입력된 텍스트 : {text}</div>
-      <div>텍스트의 길이 : {textLength}</div>
-      <div>뒤집힌 텍스트 : {reversedText}</div>
+      <h1>포켓몬 리스트</h1>
+      <ul>
+        {data.results.map((poke) => (
+          <li key={poke}>{poke.name}</li>
+        ))}
+      </ul>
     </>
   );
 };
+
 export default App;
