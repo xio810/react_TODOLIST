@@ -8,7 +8,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, "Monaco", Consolas, Courier New,
     monospace;
 }
 @font-face {
@@ -20,6 +20,6 @@ code {
 }
 
 html > body {
-  font-family: "GmarketSansMedium", sans-serif;
+  font-family: "monospace", sans-serif;
   text-underline-position: under;
 }

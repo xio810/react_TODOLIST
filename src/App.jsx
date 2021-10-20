@@ -22,10 +22,21 @@ const Main = () => {
 
   return (
     <>
+      <h1>POKÉMON</h1>
       <ul>
-        {data.results.map((poke) => (
-          <li key={poke}>{poke.name}</li>
-        ))}
+        {data.results.map((poke) => {
+          const urlBits = poke.url.split("/");
+          const no = parseInt(urlBits[urlBits.length - 2]);
+
+          return (
+            <li key={poke}>
+              <img
+                src={`https://cdn.jsdelivr.net/gh/PokeAPI/sprites/sprites/pokemon/${no}.png`}
+              />
+              <h2>{poke.name}</h2>
+            </li>
+          );
+        })}
       </ul>
     </>
   );
