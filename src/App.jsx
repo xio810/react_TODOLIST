@@ -12,8 +12,20 @@ const App = () => {
 };
 
 const PokeListPage = () => {
-  const { isLoading, error, data } = useQuery("pokeList", () =>
-    fetch("https://pokeapi.co/api/v2/pokemon").then((res) => res.json())
+  const [offset, setOffset] = useState(0);
+  const totalItems = 160;
+  const maxItemsInAPage = 20;
+  const limit =
+    offset + maxItemsInAPage < totalItems
+      ? maxItemsInAPage
+      : totalItems - offset;
+
+  const { isLoading, error, data } = useQuery(
+    `pokemon?offset=${offset}&limit=${limit}`,
+    () =>
+      fetch(
+        `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+      ).then((res) => res.json())
   );
 
   if (isLoading) return "Loading...";
@@ -24,6 +36,12 @@ const PokeListPage = () => {
     const urlBits = url.split("/");
     return parseInt(urlBits[urlBits.length - 2]);
   };
+
+  const showNext = () => {
+    setOffset(offset + limit);
+  };
+
+  const btnShowNextVisible = offset + limit < totalItems;
 
   return (
     <>
@@ -51,6 +69,16 @@ const PokeListPage = () => {
           );
         })}
       </ul>
+
+      {btnShowNextVisible ? (
+        <button onClick={showNext} className="btn btn-block btn-secondary">
+          다음
+        </button>
+      ) : (
+        <button className="btn btn-block btn-disabled">
+          마지막 페이지 입니다.
+        </button>
+      )}
     </>
   );
 };
