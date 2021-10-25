@@ -12,6 +12,7 @@ const App = () => {
 };
 
 const PokeListPage = () => {
+  const [pokes, setPokes] = useState([]);
   const [offset, setOffset] = useState(0);
   const totalItems = 118;
   const maxItemsInAPage = 20;
@@ -32,21 +33,20 @@ const PokeListPage = () => {
 
   if (error) return "An error has occurred: " + error.message;
 
+  if (offset + limit > pokes.length) {
+    setPokes([...pokes, ...data.results]);
+  }
+
   const getNoFromUrl = (url) => {
     const urlBits = url.split("/");
     return parseInt(urlBits[urlBits.length - 2]);
   };
 
-  const showNext = () => {
+  const showMore = () => {
     setOffset(offset + limit);
   };
 
-  const showPrev = () => {
-    setOffset(offset - maxItemsInAPage);
-  };
-
-  const btnShowPrevVisible = offset > 0;
-  const btnShowNextVisible = offset + limit < totalItems;
+  const btnShowMoreVisible = offset + limit < totalItems;
 
   return (
     <>
@@ -54,7 +54,7 @@ const PokeListPage = () => {
         포켓몬 리스트
       </h1>
       <ul>
-        {data.results.map((poke) => {
+        {pokes.map((poke) => {
           const no = getNoFromUrl(poke.url);
 
           return (
@@ -75,22 +75,10 @@ const PokeListPage = () => {
         })}
       </ul>
 
-      <div className="px-2">
-        {btnShowPrevVisible ? (
-          <button onClick={showPrev} className="btn btn-block btn-secondary">
-            이전
-          </button>
-        ) : (
-          <button className="btn btn-block btn-disabled">
-            첫 페이지 입니다.
-          </button>
-        )}
-      </div>
-
       <div className="px-2 mt-2">
-        {btnShowNextVisible ? (
-          <button onClick={showNext} className="btn btn-block btn-secondary">
-            다음
+        {btnShowMoreVisible ? (
+          <button onClick={showMore} className="btn btn-block btn-secondary">
+            More
           </button>
         ) : (
           <button className="btn btn-block btn-disabled">
